@@ -1,25 +1,14 @@
 import org.junit.Test;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
 
-
-public class FileAnalyzerTest {
-    FileAnalyzer fileAnalyzer = new FileAnalyzer();
-
+public class IOUtilsTest {
     String inFile = "test/files/data.txt";
     String outFile = "test/files/forPT.txt";
-
-    @Test
-    public void isActiveMemberTest() {
-        assert (fileAnalyzer.isActiveMember(LocalDate.parse("2023-02-04")));
-        assert (fileAnalyzer.isActiveMember(LocalDate.parse("2022-12-25")));
-        assert (!fileAnalyzer.isActiveMember(LocalDate.parse("2022-05-26")));
-        assert (!fileAnalyzer.isActiveMember(LocalDate.parse("2021-06-16")));
-    }
-
     @Test
     public void getCustomerTest(){
         Customer customer = new Customer("Alhambra Aromes", "7703021234", LocalDate.parse("2023-07-01"));
@@ -46,6 +35,10 @@ public class FileAnalyzerTest {
         int lines = 0;
         try(BufferedReader br = new BufferedReader(new FileReader(file));) {
             while(br.readLine() != null) lines++;
+        } catch (FileNotFoundException e){
+            System.out.println("File not found.");
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -56,9 +49,11 @@ public class FileAnalyzerTest {
     public void writeToFileTest(){
         int lines = countLines(outFile);
 
-        IOUtils.writeToFile(outFile, "Alhambra Aromes, " + LocalDate.now());
+        String text = "Alhambra Aromes, " + LocalDate.now();
 
-        assert (getLastLine(outFile).equals("Alhambra Aromes, " + LocalDate.now()));
+        IOUtils.writeToFile(outFile, text);
+
+        assert (getLastLine(outFile).equals(text));
         assert (countLines(outFile) == lines + 1);
     }
 }

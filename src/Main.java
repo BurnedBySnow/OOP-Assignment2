@@ -4,13 +4,14 @@ import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
-        FileAnalyzer fileAnalyzer = new FileAnalyzer();
+        CheckIn checkIn = new CheckIn();
 
         while (true) {
             String input = JOptionPane.showInputDialog("Enter name or personal nr");
             if(input == null) break;
 
-            Category res = fileAnalyzer.checkMemberStatus(input);
+            Category res = checkIn.checkMemberStatus(input);
+
             if(res == Category.Active) {
                 JOptionPane.showMessageDialog(null, "Welcome!");
                 break;
